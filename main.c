@@ -1,3 +1,5 @@
+// SORRY DOSX)
+// SORRY DIE
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
@@ -235,17 +237,14 @@ void print_info(const char* message) {
 }
 
 int main(int argc, char* argv[]) {
-    srand((unsigned int)time(NULL)); // Initialize random seed
+    srand((unsigned int)time(NULL));
 
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN);
     printf("\n UPX AntiAbdulov Patcher (");
-
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_BLUE | FOREGROUND_GREEN);
     printf("v1.1");
-
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN);
     printf(")\n");
-
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE);
 
     if (argc != 2) {
@@ -267,7 +266,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Check if it's a valid Windows executable
     FILE* file = fopen(filename, "rb");
     if (!file) {
         print_error("Failed to open file");
@@ -290,8 +288,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Check if file is already patched
-    unsigned char upx_pattern[] = { 0x55, 0x50, 0x58, 0x30 }; // UPX0
+    unsigned char upx_pattern[] = { 0x55, 0x50, 0x58, 0x30 };
     if (!is_pattern_present(patcher, filename, upx_pattern, sizeof(upx_pattern))) {
         if (is_pattern_present(patcher, filename, (unsigned char*)"UPX!", 4)) {
             print_error("This file is already patched.");
@@ -307,14 +304,13 @@ int main(int argc, char* argv[]) {
 
     print_info("Starting section patching...");
 
-    // Patch sections with random 8-byte names (including null terminator)
     char section1[9], section2[9], section3[9];
-    generate_random_string(section1, 9); // 8 chars + null
-    generate_random_string(section2, 9); // 8 chars + null
-    generate_random_string(section3, 9); // 8 chars + null
+    generate_random_string(section1, 9);
+    generate_random_string(section2, 9);
+    generate_random_string(section3, 9);
 
     print_info("Patching UPX0 section...");
-    unsigned char pattern1[] = { 0x55, 0x50, 0x58, 0x30 }; // UPX0
+    unsigned char pattern1[] = { 0x55, 0x50, 0x58, 0x30 };
     if (!patch_bytes(patcher, filename, pattern1, sizeof(pattern1),
         (unsigned char*)section1, 8)) {
         print_error("Failed to patch UPX0 section");
@@ -323,7 +319,7 @@ int main(int argc, char* argv[]) {
     }
 
     print_info("Patching UPX1 section...");
-    unsigned char pattern2[] = { 0x55, 0x50, 0x58, 0x31 }; // UPX1
+    unsigned char pattern2[] = { 0x55, 0x50, 0x58, 0x31 };
     if (!patch_bytes(patcher, filename, pattern2, sizeof(pattern2),
         (unsigned char*)section2, 8)) {
         print_error("Failed to patch UPX1 section");
@@ -332,7 +328,7 @@ int main(int argc, char* argv[]) {
     }
 
     print_info("Patching UPX2 section...");
-    unsigned char pattern3[] = { 0x55, 0x50, 0x58, 0x32 }; // UPX2
+    unsigned char pattern3[] = { 0x55, 0x50, 0x58, 0x32 };
     if (!patch_bytes(patcher, filename, pattern3, sizeof(pattern3),
         (unsigned char*)section3, 8)) {
         print_error("Failed to patch UPX2 section");
@@ -359,7 +355,7 @@ int main(int argc, char* argv[]) {
 
     print_info("Replacing standard DOS Stub message...");
     char dos_message[40];
-    generate_random_string(dos_message, 40); // 39 chars + null
+    generate_random_string(dos_message, 40);
     if (!patch_bytes(patcher, filename,
         (unsigned char*)"This program cannot be run in DOS mode.",
         strlen("This program cannot be run in DOS mode."),
